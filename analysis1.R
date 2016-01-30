@@ -22,3 +22,16 @@ pollutantmean <- function(directory, pollutant, id = 1:332)
     mean(Data[,pollutant],na.rm=TRUE)
 
     }
+
+    complete <- function(directory, idvector = 1:332) 
+    {
+      df <- data.frame(id = integer(), nobs = integer())
+      for (id in idvector) 
+      {
+        filename <- paste(directory, "/", sprintf("%03d", as.integer(id)), ".csv", sep = "")
+        data <- read.csv(filename)
+        nd <- data.frame(id = id, nobs = nrow(na.omit(data)))
+        df <- rbind(df, nd)
+      }
+      df
+    }
