@@ -1,5 +1,5 @@
-pollutantmean <- function(directory, pollutant, id = 1:332) 
-{
+    pollutantmean <- function(directory, pollutant, id = 1:332) 
+    {
     #set the path
     path = directory
 
@@ -34,4 +34,22 @@ pollutantmean <- function(directory, pollutant, id = 1:332)
         df <- rbind(df, nd)
       }
       df
+    }
+    
+    corr <- function(directory, threshold = 0) 
+    {
+      cor_vec <- c()
+      for (id in 1:332) {
+        filename <- paste(directory, "/", sprintf("%03d", as.integer(id)), ".csv", sep = "")
+        data <- na.omit(read.csv(filename))
+        complete <- nrow(data)
+        if (complete <= threshold) 
+        {
+          next
+        }
+        sulfate <- data[["sulfate"]]
+        nitrate <- data[["nitrate"]]
+        cor_vec <- c(cor_vec, cor(sulfate, nitrate))
+      }
+      cor_vec
     }
